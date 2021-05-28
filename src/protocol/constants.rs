@@ -15,7 +15,7 @@ pub enum AuthenticationType {
 #[derive(Clone, Debug, PartialEq)]
 pub enum Authentication {
     Custom(u8),
-    Assigned(AuthenticationType)
+    Assigned(AuthenticationType),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -43,11 +43,4 @@ pub enum Reply {
     TTLExpired,
     CommandNotSupported,
     AddressTypeNotSupported,
-}
-
-pub enum ConnectionState {
-    Initiated,
-    AuthRequestWaiting,
-    ConnectionRequestWaiting,
-    Established,
 }

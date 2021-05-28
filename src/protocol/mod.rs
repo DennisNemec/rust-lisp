@@ -1,5 +1,5 @@
-pub mod header;
 pub mod constants;
+pub mod header;
 
 use constants::*;
 
@@ -35,8 +35,8 @@ pub fn extract_auth_type_from_byte(byte: u8) -> Authentication {
         0x08 => Authentication::Assigned(AuthenticationType::MultiAuthenticationFramework),
         0x09 => Authentication::Assigned(AuthenticationType::JsonParameterBlock),
         0x80..=0xFE => Authentication::Custom(byte),
-        _ => Authentication::Assigned(AuthenticationType::NoAuthentication)
-    }
+        _ => Authentication::Assigned(AuthenticationType::NoAuthentication),
+    };
 }
 
 pub fn extract_auth_u8_from_auth_type(auth: Authentication) -> Option<u8> {

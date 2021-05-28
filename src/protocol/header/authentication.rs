@@ -59,6 +59,15 @@ pub struct AuthenticationResponse {
     cauth: Authentication,
 }
 
+impl AuthenticationResponse {
+    pub fn new(cauth: Authentication) -> Self {
+        Self {
+            ver: 0x05,
+            cauth
+        }
+    }
+}
+
 /* Trait implementation */
 
 impl Serialization<AuthenticationRequest> for AuthenticationRequest {
@@ -66,9 +75,13 @@ impl Serialization<AuthenticationRequest> for AuthenticationRequest {
         let mut auth_binary: Vec<u8> = Vec::new();
         auth_binary.push(self.ver);
         auth_binary.push(self.nauth);
-        auth_binary.append(&mut self.auth.into_iter().map(|auth| {
-            extract_auth_u8_from_auth_type(auth).unwrap()
-        }).collect::<Vec<u8>>());
+        auth_binary.append(
+            &mut self
+                .auth
+                .into_iter()
+                .map(|auth| extract_auth_u8_from_auth_type(auth).unwrap())
+                .collect::<Vec<u8>>(),
+        );
 
         auth_binary
     }
@@ -80,7 +93,10 @@ impl Serialization<AuthenticationRequest> for AuthenticationRequest {
             Ok(AuthenticationRequest {
                 ver: binary[0],
                 nauth: binary[1],
-                auth: binary[2..binary.len()].iter().map(|&auth_method| extract_auth_type_from_byte(auth_method)).collect::<Vec<Authentication>>()
+                auth: binary[2..binary.len()]
+                    .iter()
+                    .map(|&auth_method| extract_auth_type_from_byte(auth_method))
+                    .collect::<Vec<Authentication>>(),
             })
         };
     }
@@ -118,7 +134,9 @@ mod tests {
         AuthenticationRequest {
             ver: 0x05,
             nauth: 0x01,
-            auth: vec![Authentication::Assigned(AuthenticationType::NoAuthentication)],
+            auth: vec![Authentication::Assigned(
+                AuthenticationType::NoAuthentication,
+            )],
         }
     }
 
@@ -175,5 +193,4 @@ mod tests {
             get_example_authentication_response_serialized()
         )
     }
-
 }

@@ -1,5 +1,8 @@
 use crate::protocol::constants::*;
-use crate::protocol::{extract_port_from_bytes_arr, extract_atyp_from_byte, extract_address_from_bytes_arr, Serialization};
+use crate::protocol::{
+    extract_address_from_bytes_arr, extract_atyp_from_byte, extract_port_from_bytes_arr,
+    Serialization,
+};
 
 /*
 After the handshake has been completed the client tells the server
@@ -97,7 +100,6 @@ pub struct ConnectionResponse {
     bind_port: u16,
 }
 
-
 impl Serialization<ConnectionRequest> for ConnectionRequest {
     fn serialize(self) -> Vec<u8> {
         let mut connection_request_binary: Vec<u8> = Vec::new();
@@ -191,7 +193,6 @@ impl Serialization<ConnectionResponse> for ConnectionResponse {
         };
     }
 }
-
 
 #[cfg(test)]
 mod tests {
