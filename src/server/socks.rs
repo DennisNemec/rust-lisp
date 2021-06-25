@@ -21,14 +21,14 @@ impl Socks5Server {
         }
     }
 
-    pub async fn start<A> (mut self) -> std::io::Result<()> where A: AuthHandler{
+    pub async fn start<A> (mut self) -> std::io::Result<()> where A: AuthHandler {
          self.listener = Some(
             TcpListener::bind(format!("{}:{}", self.host_ip, self.host_port))
                 .await
                 .expect("Could not bind listener socket."));
 
         loop {
-            let (mut socket, address) = self.listener.unwrap().accept().await.expect("Could not accept connection.");
+            let (mut socket, address) = self.listener.as_ref().unwrap().accept().await.expect("Could not accept connection.");
 
             // TODO: implement accept event handler
             tokio::task::spawn(async move {

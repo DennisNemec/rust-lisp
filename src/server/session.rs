@@ -67,6 +67,10 @@ impl ConnectionInstance {
             ConnectionState::Initiated => {
                 self.state = ConnectionState::Authenticating(AuthenticationState::Initiated);
                 self.handle_auth_request::<A>(AuthenticationRequest::deserialize(data).unwrap());
+            },
+
+            ConnectionState::Authenticating(AuthenticationState::Initiated) => {
+                self.state = ConnectionState
             }
 
             _ => ()
@@ -92,6 +96,10 @@ impl ConnectionInstance {
 
             _ => ()
         }
+    }
+
+    fn handle_auth_negotiation<A>(self, data: Vec<u8>) {
+
     }
 
     fn handle_connection_request(self, con_request: ConnectionRequest) {
